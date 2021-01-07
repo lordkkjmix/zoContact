@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>$(DEVELOPMENT_LANGUAGE)</string>
+	<key>CFBundleExecutable</key>
+	<string>$(EXECUTABLE_NAME)</string>
+	<key>CFBundleIdentifier</key>
+	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>zocontact</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleVersion</key>
+	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+	<key>LSRequiresIPhoneOS</key>
+	<true/>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsForMedia</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
+		<key>NSExceptionAllowsInsecureHTTPLoads</key>
+		<true/>
+		<key>NSExceptionMinimumTLSVersion</key>
+		<string>TLSv1.2</string>
+		<key>NSExceptionRequiresForwardSecrecy</key>
+		<true/>
+		<key>NSIncludesSubdomains</key>
+		<true/>
+		<key>NSRequiresCertificateTransparency</key>
+		<false/>
+		<key>NSThirdPartyExceptionAllowsInsecureHTTPLoads</key>
+		<false/>
+		<key>NSThirdPartyExceptionMinimumTLSVersion</key>
+		<string>TLSv1.2</string>
+		<key>NSThirdPartyExceptionRequiresForwardSecrecy</key>
+		<true/>
+	</dict>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Utile pour le bruit des notification push</string>
+	<key>NSCalendarsUsageDescription</key>
+	<string>Utile pour le calcule de de la date de démarrage du plan de numérotation</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Lecture des contacts pour la conversion en contacts de 10 chiffres</string>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Nous n'utilisons pas, c'est juste pour la validation de apple</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Recommandation de apple, mais nous n'utilisons pas la géolocalisation</string>
+	<key>NSMotionUsageDescription</key>
+	<string>Utiliser pour anticiper l'interaction avec les publicité</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Utile lors de la saisie et recherche de contact</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
+	<key>UIMainStoryboardFile</key>
+	<string>Main</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
+</dict>
+</plist>
