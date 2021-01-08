@@ -78,9 +78,9 @@ class SettingsScreen extends StatelessWidget {
                   child: ListTile(
                       onTap: () => {
                             Share.share(
-                              "Partager BlouContact\nCette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
+                              "Partager ZoContact\nCette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
                               subject:
-                                  "Partager BlouContact:Cette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
+                                  "Partager ZoContact:Cette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
                             )
                           },
                       leading: Container(

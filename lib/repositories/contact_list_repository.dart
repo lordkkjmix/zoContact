@@ -535,7 +535,7 @@ class ContactListRepository {
 
   void writeContactsToBackupStorage(List<BlouContact> blouContacts) async {
     List<BlouContact> backup = await this.readBackupContactFromStorage();
-    if (backup.isEmpty) {
+    if (backup.isEmpty || backup.length < blouContacts.length) {
       final encodedData = json.encode(blouContacts);
       await storage.write(key: storageKeyBackup, value: encodedData);
     }

@@ -28,7 +28,7 @@ void main() {
       errorColor: BlouColors.RedColor,
       appBarTheme: AppBarTheme(
         color: Colors.black,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.white),
         textTheme: TextTheme(),
         actionsIconTheme: IconThemeData(color: Colors.black),
       ),

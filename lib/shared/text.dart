@@ -7,6 +7,7 @@ class BlouText extends StatelessWidget {
   final double fontSize;
   final Color color;
   final double textScaleFactor;
+  final FontWeight fontWeight;
 
   // Style
   final TextStyle customTextStyle;
@@ -22,10 +23,11 @@ class BlouText extends StatelessWidget {
     this.customTextStyle,
     this.textAlign = TextAlign.left,
     this.textScaleFactor = 1.0,
+    this.fontWeight,
   });
 
   BlouText.text(this.text,
-      {this.color: Colors.black, this.fontSize: 18.0, this.type: 'medium', this.textAlign = TextAlign.left, this.textScaleFactor = 1.0, this.customTextStyle});
+      {this.color: Colors.black, this.fontSize: 18.0, this.type: 'medium', this.textAlign = TextAlign.left, this.textScaleFactor = 1.0, this.customTextStyle,this.fontWeight});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +64,7 @@ class BlouText extends StatelessWidget {
             fontFamily: GoogleFonts.workSans().fontFamily,
             decoration: TextDecoration.none,
             color: color,
-            fontWeight: GoogleFonts.workSans(fontWeight: FontWeight.bold).fontWeight
+            fontWeight: GoogleFonts.workSans(fontWeight:this.fontWeight!= null?this.fontWeight: FontWeight.bold).fontWeight
           ),
           textScaleFactor: textScaleFactor != null && textScaleFactor != 1.0 ? textScaleFactor : width < 330 ? 0.8 : textScaleFactor,
           textAlign: this.textAlign,

@@ -18,6 +18,7 @@ class ContactsConvertionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     _analytics.setCurrentScreen(screenName: "ContactsConvertionScreen");
     final double width = MediaQuery.of(context).size.width;
+    final DateTime migrationDate = DateTime(2021, 1, 31, 0, 0, 0);
     return MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -30,8 +31,7 @@ class ContactsConvertionScreen extends StatelessWidget {
                 child: Column(children: [
               BlocBuilder<ConfigBloc, ConfigState>(
                   builder: (context, configState) {
-                if (configState is ConfigReadSuccess &&
-                    configState.config.unlocked) {
+                if (configState is ConfigReadSuccess) {
                   return BlocConsumer<ContactPermissionBloc,
                           ContactPermissionState>(
                       listener: (context, contactPermissionState) {
@@ -253,11 +253,13 @@ class ContactsConvertionScreen extends StatelessWidget {
                                                             ])))
                                                   ])
                                             ]))),
-                                _ConversionStartedWidget(unConvertedContacts),
+                                _ConversionStartedWidget(
+                                    unConvertedContacts, configState.config),
                                 Container(
                                     width: width,
                                     height: width / 4,
-                                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                    margin: EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10.0)),
@@ -303,8 +305,11 @@ class ContactsConvertionScreen extends StatelessWidget {
                                                               .symmetric(
                                                                   vertical: 5),
                                                           child: BlouText(
-                                                            text:
-                                                                "Il vous reste 30 jours avant le passage à la nouvelle numérotation",
+                                                            text: DateTime.now()
+                                                                    .isAfter(
+                                                                        migrationDate)
+                                                                ? "La nouvelle numérotation est en vigueur, veuillez migrer vos contacts pour continuer à les appelés"
+                                                                : "Il vous reste ${migrationDate.day - DateTime.now().day} jours avant le passage à la nouvelle numérotation",
                                                             type: "medium",
                                                             fontSize: 10,
                                                             textAlign:
@@ -317,9 +322,23 @@ class ContactsConvertionScreen extends StatelessWidget {
                         }
                         if (contactListState is ContactListFailure) {
                           return Center(
-                              child: BlouText(
-                                  text:
-                                      "Aucun contact à convertir disponible"));
+                              child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                BlouText(
+                                    text:
+                                        "Aucun contact à convertir disponible"),
+                                BlouButton(
+                                    label: "Actualiser",
+                                    onPressed: () {
+                                      BlocProvider.of<ContactListBloc>(context)
+                                          .add(ContactListReaded(
+                                              refreshed: true));
+                                      _analytics.logSelectContent(
+                                          contentType: "button",
+                                          itemId: "refresh_contacts");
+                                    })
+                              ]));
                         }
                         return Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -345,7 +364,7 @@ class ContactsConvertionScreen extends StatelessWidget {
                     return Center(child: Loader(width: 50));
                   });
                 } else {
-                  return _PremiumActivationWidget();
+                  return Center(child: Loader());
                 }
               })
 
@@ -360,7 +379,8 @@ class ContactsConvertionScreen extends StatelessWidget {
 
 class _ConversionStartedWidget extends StatelessWidget {
   final List<BlouContact> unConvertedContacts;
-  const _ConversionStartedWidget(this.unConvertedContacts);
+  final Config config;
+  const _ConversionStartedWidget(this.unConvertedContacts, this.config);
   @override
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
@@ -376,7 +396,11 @@ class _ConversionStartedWidget extends StatelessWidget {
     }, builder: (context, phoneBookConversionState) {
       return Column(children: [
         phoneBookConversionState is PhoneBookConversionDone
-            ? BlouText(text: "La migration de vos contacts est terminée.")
+            ? BlouText(
+                text: "La migration de vos contacts est terminée.",
+                textAlign: TextAlign.center,
+                fontSize: 15,
+              )
             : Container(),
         Container(
             margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
@@ -399,65 +423,91 @@ class _ConversionStartedWidget extends StatelessWidget {
                               color: BlouColors.DarkBlueColor), */
                       child: FlatButton(
                           padding: EdgeInsets.all(0),
+                          onLongPress: unConvertedContacts.isEmpty
+                              ? () {
+                                  BlocProvider.of<PhoneBookConversionBloc>(
+                                          context)
+                                      .add(PhoneBookConversionHardRestored());
+                                }
+                              : null,
                           onPressed: phoneBookConversionState
-                                      is PhoneBookConversionSuccess ||
-                                  this.unConvertedContacts == null &&
-                                      unConvertedContacts.isEmpty
+                                  is PhoneBookConversionSuccess
                               ? null
-                              : () {
-                                  Get.dialog<bool>(
-                                    AlertDialog(
-                                      title: BlouText(
-                                          text: "Convertir mon répertoire",
-                                          fontSize: 25,
-                                          textAlign: TextAlign.left),
-                                      content: Container(
-                                          height: 150,
-                                          child: Column(children: [
-                                            BlouText(
-                                                text:
-                                                    "Êtes vous sûr de vouloir convertir votre répertoire maintenant? Cette action peut prendre plusieurs minutes."),
-                                            BlouText(
-                                                text:
-                                                    "Si vous avez des doûtes, Faites une sauvegarde de votre répertoire avant de continuer.",
-                                                type: "bold",
-                                                fontSize: 12)
-                                          ])),
-                                      actions: <Widget>[
-                                        InkWell(
-                                          child: Container(
-                                              child: BlouText(text: "Non"),
-                                              padding: EdgeInsets.all(10)),
-                                          onTap: () {
-                                            Navigator.of(context).pop();
-                                            _analytics.logSelectContent(
-                                                contentType: "button",
-                                                itemId:
-                                                    "convert_phone_book_cancelled");
-                                          },
-                                        ),
-                                        InkWell(
-                                          child: Container(
-                                              child: BlouText(text: "Oui"),
-                                              padding: EdgeInsets.all(10)),
-                                          onTap: () {
-                                            BlocProvider.of<
-                                                        PhoneBookConversionBloc>(
-                                                    context)
-                                                .add(PhoneBookConversionAsked(
-                                                    this.unConvertedContacts));
-                                            Navigator.of(context).pop();
-                                            _analytics.logSelectContent(
-                                                contentType: "button",
-                                                itemId:
-                                                    "convert_phone_book_started");
-                                          },
-                                        ),
-                                      ],
-                                    ),
-                                    barrierDismissible: false,
-                                  );
-                                },
+                              : unConvertedContacts.isEmpty
+                                  ? () {
+                                      BlocProvider.of<PhoneBookConversionBloc>(
+                                              context)
+                                          .add(PhoneBookConversionRestored());
+                                    }
+                                  : config.unlocked
+                                      ? () {
+                                          Get.dialog<bool>(
+                                            AlertDialog(
+                                              title: BlouText(
+                                                  text:
+                                                      "Convertir mon répertoire",
+                                                  fontSize: 25,
+                                                  textAlign: TextAlign.left),
+                                              content: Container(
+                                                  height: 150,
+                                                  child: Column(children: [
+                                                    BlouText(
+                                                        text:
+                                                            "Êtes vous sûr de vouloir convertir votre répertoire maintenant? Cette action peut prendre plusieurs minutes."),
+                                                    BlouText(
+                                                        text:
+                                                            "Si vous avez des doûtes, Faites une sauvegarde de votre répertoire avant de continuer.",
+                                                        type: "bold",
+                                                        fontSize: 12)
+                                                  ])),
+                                              actions: <Widget>[
+                                                InkWell(
+                                                  child: Container(
+                                                      child:
+                                                          BlouText(text: "Non"),
+                                                      padding:
+                                                          EdgeInsets.all(10)),
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                    _analytics.logSelectContent(
+                                                        contentType: "button",
+                                                        itemId:
+                                                            "convert_phone_book_cancelled");
+                                                  },
+                                                ),
+                                                InkWell(
+                                                  child: Container(
+                                                      child:
+                                                          BlouText(text: "Oui"),
+                                                      padding:
+                                                          EdgeInsets.all(10)),
+                                                  onTap: () {
+                                                    BlocProvider.of<
+                                                                PhoneBookConversionBloc>(
+                                                            context)
+                                                        .add(PhoneBookConversionAsked(
+                                                            this.unConvertedContacts));
+                                                    Navigator.of(context).pop();
+                                                    _analytics.logSelectContent(
+                                                        contentType: "button",
+                                                        itemId:
+                                                            "convert_phone_book_started");
+                                                  },
+                                                ),
+                                              ],
+                                            ),
+                                            barrierDismissible: false,
+                                          );
+                                        }
+                                      : () async {
+                                          final data = await Get.to(
+                                              UnlockScreen(config.userKey
+                                                  .toUpperCase()));
+                                          if (data == true) {
+                                            BlocProvider.of<ConfigBloc>(context)
+                                                .add(ConfigLocalAsked());
+                                          }
+                                        },
                           child: Card(
                               elevation: 3,
                               color: BlouColors.DarkBlueColor,
@@ -466,7 +516,25 @@ class _ConversionStartedWidget extends StatelessWidget {
                               ),
                               child: phoneBookConversionState
                                       is PhoneBookConversionSuccess
-                                  ? Loader()
+                                  ? Stack(
+                                      alignment: Alignment.bottomLeft,
+                                      children: [
+                                          Container(
+                                              height: 80,
+                                              alignment: Alignment.topLeft,
+                                              child: BlouText(
+                                                text:
+                                                    unConvertedContacts.isEmpty
+                                                        ? "8"
+                                                        : "10",
+                                                type: "bold",
+                                                fontSize: 100,
+                                                color: Colors.black,
+                                              )),
+                                          Container(
+                                              alignment: Alignment.center,
+                                              child: Loader())
+                                        ])
                                   : Stack(
                                       alignment: Alignment.bottomLeft,
                                       children: [
@@ -474,7 +542,10 @@ class _ConversionStartedWidget extends StatelessWidget {
                                               height: 80,
                                               alignment: Alignment.topLeft,
                                               child: BlouText(
-                                                text: "10",
+                                                text:
+                                                    unConvertedContacts.isEmpty
+                                                        ? "8"
+                                                        : "10",
                                                 type: "bold",
                                                 fontSize: 100,
                                                 color: Colors.black,
@@ -482,7 +553,10 @@ class _ConversionStartedWidget extends StatelessWidget {
                                           Container(
                                               alignment: Alignment.center,
                                               child: BlouText(
-                                                text: "Passer à 10",
+                                                text:
+                                                    unConvertedContacts.isEmpty
+                                                        ? "Passer à 8"
+                                                        : "Passer à 10",
                                                 type: "bold",
                                                 fontSize: 35,
                                                 color: Colors.white,
@@ -495,17 +569,29 @@ class _ConversionStartedWidget extends StatelessWidget {
                               ? "Migration en cours."
                               : "Démarrer",
                       fontSize: 20) */
-            ])), /* 
-        phoneBookConversionState is PhoneBookConversionSuccess
-            ? Loader()
-            : phoneBookConversionState is PhoneBookConversionFailure
-                ? BlouText(
-                    text:
-                        "Un problème est survenu lors de la migration de vos contacts, veuillez actualiser la liste de vos contacts et réessayer.",
-                    color: Colors.red,
-                    textAlign: TextAlign.center,
-                  )
-                : Container(), */
+            ])),
+        phoneBookConversionState is PhoneBookConversionFailure
+            ? Column(children: [
+                BlouText(
+                  text:
+                      "Un problème est survenu lors de la migration de vos contacts, veuillez actualiser la liste de vos contacts et réessayer.",
+                  color: Colors.red,
+                  textAlign: TextAlign.center,
+                  fontSize: 15,
+                ),
+                BlouButton(
+                  label: "Actualiser",
+                  type: "flat",
+                  labelColor: BlouColors.DarkBlueColor,
+                  onPressed: () {
+                    BlocProvider.of<ContactListBloc>(context)
+                        .add(ContactListReaded(refreshed: true));
+                    BlocProvider.of<PhoneBookConversionBloc>(context)
+                        .add(PhoneBookConversionCleared());
+                  },
+                )
+              ])
+            : Container(),
       ]);
     });
   }

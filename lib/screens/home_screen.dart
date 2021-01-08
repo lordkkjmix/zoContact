@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:share/share.dart';
 import 'package:zocontact/blocs/blocs.dart';
 import 'package:zocontact/blocs/push_notification/push_notification.dart';
 import 'package:zocontact/models/models.dart';
@@ -27,32 +28,26 @@ class HomeScreen extends StatelessWidget {
         return [
           Container(
               margin: EdgeInsets.symmetric(horizontal: 10),
-              child: BlocBuilder<PhoneBookConversionBloc,
-                      PhoneBookConversionState>(
-                  builder: (context, phoneBookConversionState) {
-                if (phoneBookConversionState is PhoneBookConversionSuccess) {
-                  return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Loader());
-                } else {
-                  return InkWell(
-                      child: Column(children: [
-                        Container(
-                            child: Icon(Icons.share, color: Colors.white,)),
-                        BlouText(
-                          text: "Partager",
-                          fontSize: 12,
-                          color: Colors.white,
-                        )
-                      ]),
-                      onTap: () {
-                      /*   BlocProvider.of<ContactListBloc>(context)
-                            .add(ContactListReaded(refreshed: true));
-                        _analytics.logSelectContent(
-                            contentType: "button", itemId: "refresh_contacts"); */
-                      });
-                }
-              }))
+              child: InkWell(
+                  child: Column(children: [
+                    Container(
+                        child: Icon(
+                      Icons.share,
+                      color: Colors.white,
+                    )),
+                    BlouText(
+                      text: "Partager",
+                      fontSize: 12,
+                      color: Colors.white,
+                    )
+                  ]),
+                  onTap: () {
+                    Share.share(
+                      "Partager ZoContact\nCette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
+                      subject:
+                          "Partager ZoContact:Cette application m'a permis de convertir mes contacts à 10 chiffres facilement, clique sur le lien l'avoir :\nLien :https://bloucontact.page.link/Go1D",
+                    );
+                  }))
         ];
       case 2:
         return [
@@ -222,6 +217,7 @@ class HomeScreen extends StatelessWidget {
                           child: Visibility(
                               visible: tab.id == "contact_list",
                               child: SearchContactInputWdget())),
+
                       ///_AdLoaderWidget()
                     ]),
                     bottomNavigationBar: BottomNavigationBar(

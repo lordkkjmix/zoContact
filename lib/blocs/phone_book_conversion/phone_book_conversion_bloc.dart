@@ -20,7 +20,7 @@ class PhoneBookConversionBloc
   ) async* {
     if (event is PhoneBookConversionAsked) {
       yield PhoneBookConversionSuccess(event.unConvertedContacts, 1);
-      add(PhoneBookConversionStarted(event.unConvertedContacts, 0, isHardBackup:event.isHardBackup));
+     add(PhoneBookConversionStarted(event.unConvertedContacts, 0, isHardBackup:event.isHardBackup));
     } else if (event is PhoneBookConversionStarted) {
 
       try {
@@ -90,6 +90,8 @@ class PhoneBookConversionBloc
       if (revertedContacts != null && revertedContacts.isNotEmpty) {
         add(PhoneBookConversionAsked(revertedContacts, isHardBackup: true));
       } 
+    }else if(event is PhoneBookConversionCleared){
+      yield PhoneBookConversionInitial();
     }
   }
 }
