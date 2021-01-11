@@ -50,90 +50,7 @@ class HomeScreen extends StatelessWidget {
                   }))
         ];
       case 2:
-        return [
-          Container(
-              margin: EdgeInsets.symmetric(horizontal: 10),
-              child: BlocConsumer<PhoneBookConversionBloc,
-                      PhoneBookConversionState>(
-                  listener: (context, phoneBookConversionState) {
-                if (phoneBookConversionState is PhoneBookConversionDone) {
-                  HapticFeedback.lightImpact();
-                  Future.delayed(Duration(seconds: 2), () {
-                    BlocProvider.of<ContactListBloc>(context)
-                        .add(ContactListReaded(refreshed: true));
-                  });
-                }
-              }, builder: (context, phoneBookConversionState) {
-                if (phoneBookConversionState is PhoneBookConversionSuccess) {
-                  return Container(
-                      margin: EdgeInsets.symmetric(horizontal: 10),
-                      child: Loader());
-                } else {
-                  return InkWell(
-                    child: Column(children: [
-                      Container(
-                          child: SvgPicture.asset("assets/icons/reply.svg",
-                              width: 30)),
-                      BlouText(
-                        text: "Restaurer",
-                        fontSize: 12,
-                      )
-                    ]),
-                    onTap: () {
-                      BlocProvider.of<PhoneBookConversionBloc>(context)
-                          .add(PhoneBookConversionRestored());
-                      _analytics.logSelectContent(
-                          contentType: "button", itemId: "restore_contacts");
-                    },
-                    onLongPress: () {
-                      Get.dialog<bool>(
-                        AlertDialog(
-                          title: BlouText(
-                              text: "Restauration mon répertoire",
-                              fontSize: 25,
-                              textAlign: TextAlign.left),
-                          content: Container(
-                              height: 150,
-                              child: Column(children: [
-                                BlouText(
-                                    text:
-                                        "Êtes vous sûr de vouloir faire une restauration d'origine de votre repertoire (peut prendre plus de temps)?")
-                              ])),
-                          actions: <Widget>[
-                            InkWell(
-                              child: Container(
-                                  child: BlouText(text: "Non"),
-                                  padding: EdgeInsets.all(10)),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                _analytics.logSelectContent(
-                                    contentType: "button",
-                                    itemId: "hard_restore_contacts_cancelled");
-                              },
-                            ),
-                            InkWell(
-                              child: Container(
-                                  child: BlouText(text: "Oui"),
-                                  padding: EdgeInsets.all(10)),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                BlocProvider.of<PhoneBookConversionBloc>(
-                                        context)
-                                    .add(PhoneBookConversionHardRestored());
-                                _analytics.logSelectContent(
-                                    contentType: "button",
-                                    itemId: "hard_restore_contacts");
-                              },
-                            ),
-                          ],
-                        ),
-                        barrierDismissible: false,
-                      );
-                    },
-                  );
-                }
-              }))
-        ];
+        return [];
       default:
         return [];
     }
@@ -197,7 +114,7 @@ class HomeScreen extends StatelessWidget {
                     appBar: AppBar(
                       backgroundColor: BlouColors.DarkBlueColor,
                       title: BlouText(
-                          text: tab.appBarTitle, type: "medium", fontSize: 20),
+                          text: tab.appBarTitle, type: "bold", fontSize: 25, color:Colors.white),
                       elevation: 0,
                       //isLogo: tabs.indexOf(tab) == 0,
                       centerTitle: false,
@@ -226,10 +143,10 @@ class HomeScreen extends StatelessWidget {
                         items: <BottomNavigationBarItem>[
                           for (var index = 0; index < tabs.length; index++)
                             BottomNavigationBarItem(
-                              activeIcon: SvgPicture.asset(tabs[index].icon,
+                              activeIcon: Image.asset(tabs[index].icon,
                                   //color: Theme.of(context).primaryColor,
                                   width: 30),
-                              icon: SvgPicture.asset(
+                              icon: Image.asset(
                                 tabs[index].icon,
                                 width: 30,
                                 //color: Colors.black38

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "637139590837",
+    "project_id": "zocontact-e0b1a",
+    "storage_bucket": "zocontact-e0b1a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:637139590837:android:3e737b4b60eaa04d2628fc",
+        "android_client_info": {
+          "package_name": "com.digitapp.zocontact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "637139590837-jsojct5enl2moinnv83ubtkf8qjots87.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLwZ1GZPHGJnINZLXgMlaCWC5HwP6OcVI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "637139590837-jsojct5enl2moinnv83ubtkf8qjots87.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

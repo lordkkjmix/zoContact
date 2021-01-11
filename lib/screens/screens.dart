@@ -8,3 +8,4 @@ export './about_screen.dart';
 export './cgu_screen.dart';
 export './donate_screen.dart';
 export './unlock_screen.dart';
+export './help_screen.dart';
