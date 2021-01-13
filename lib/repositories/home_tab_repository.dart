@@ -1,4 +1,5 @@
 import 'package:zocontact/models/models.dart';
+import 'package:zocontact/screens/help_content_screen.dart';
 import 'package:zocontact/screens/screens.dart';
 
 class HomeTabRepository {
@@ -16,7 +17,11 @@ class HomeTabRepository {
         appBarTitle: "",
         tabTitle: "A propos",
         icon: "assets/icons/about_icon.png",
-        screen: ContactsConvertionScreen(),
+        screen: HelpContentScreen(HelpContent(
+          title: "A propos",
+          img: "assets/img/illustration_fille_assise_chaise.png",
+          content: "Bla bla bla Bla bla bla Bla bla bla Bla bla bla Bla bla bla Bla bla bla Bla bla bla ",
+          heightRatio: 1.2)),
       ),
       HomeTab(
         id: "rate_app",
