@@ -111,7 +111,7 @@ class HomeScreen extends StatelessWidget {
                 final tab = tabs[homeTabState.selectedIndex];
                 return Scaffold(
                     backgroundColor: BlouColors.GreyBgColor,
-                    appBar: tab.id == "about_app"?null:AppBar(
+                    appBar: tab.id == "about_app" || tab.id == "rate_app"?null:AppBar(
                       backgroundColor: BlouColors.DarkBlueColor,
                       title: BlouText(
                           text: tab.appBarTitle, type: "bold", fontSize: 25, color:Colors.white),

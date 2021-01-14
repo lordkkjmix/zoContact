@@ -46,7 +46,18 @@ class HelpContentScreen extends StatelessWidget {
                   BlouButton(label: "Via Messenger", onPressed: (){}),
                   BlouButton(label: "Via Email", onPressed: (){})
                 ])
-              : Container(
+              :this.helpContent.id =="rate_app"?Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal:20, vertical: 10),
+                    child:BlouText(
+                      text: "Nous sommes ravis que Zo Contact vous plaise.\nAidez-nous à obtenir 5 étoiles sur le store.",
+                      type: "bold",
+                      color: BlouColors.DarkBlueColor,
+                      textAlign: TextAlign.justify)),
+                  BlouButton(label: "Noter 5 étoiles", onPressed: (){}),
+                ]): Container(
                   width: width,
                   margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                   child: BlouText(

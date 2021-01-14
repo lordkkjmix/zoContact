@@ -26,7 +26,7 @@ class HelpScreen extends StatelessWidget {
       HelpContent(
           id: "about_whatsapp",
           title: "Et mon Whatsapp?",
-          img: "assets/img/illustration_yoga.png",
+          img: "assets/img/illustration_fille_fachee.png",
           content: "",
           heightRatio: 2),
       HelpContent(

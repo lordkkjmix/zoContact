@@ -28,7 +28,11 @@ class HomeTabRepository {
         appBarTitle: "",
         tabTitle: "Noter l'app",
         icon: "assets/icons/rate_icon.png",
-        screen: ContactsConvertionScreen(),
+        screen: HelpContentScreen(HelpContent(
+          id:"rate_app",
+          img: "assets/img/rating.png",
+          title: "Votre avis compte",
+          heightRatio: 1.2)),
       ),
       HomeTab(
         id: "help",
