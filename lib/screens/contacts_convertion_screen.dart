@@ -637,7 +637,7 @@ class _FailureContactPermissionWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ContactPermissionBloc, ContactPermissionState>(
         builder: (context, contactPermissionState) {
-      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      return Center(child:Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         BlouText(
             text: "Veuillez autoriser l'accès à vos contacts pour continuer",
             textAlign: TextAlign.center),
@@ -645,7 +645,7 @@ class _FailureContactPermissionWidget extends StatelessWidget {
             label: "Autoriser",
             onPressed: () => BlocProvider.of<ContactPermissionBloc>(context)
                 .add(ContactPermissionRequested()))
-      ]);
+      ]));
     });
   }
 }
